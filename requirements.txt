@@ -8,6 +8,7 @@ graphene-django==3.2.2
 graphql-core==3.2.3
 django-graphql-jwt==0.3.4
 graphene-file-upload==1.3.0
+django-graphql-playground
 
 # Auth / API utils
 django-filter==23.5
