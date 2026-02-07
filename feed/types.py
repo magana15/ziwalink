@@ -8,7 +8,7 @@ from .models import Post, Comment, Like, Share
 class UserType(DjangoObjectType):
     class Meta:
         model = ZiwaUser
-        fields = ("id", "username")
+        fields = ("id", "username", "email")
 
 
 class CommentType(DjangoObjectType):

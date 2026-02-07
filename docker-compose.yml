@@ -1,7 +1,6 @@
 services:
   web:
     build: .
-    container_name: ziwalink_web
     command: gunicorn core.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - .:/app
@@ -12,19 +11,24 @@ services:
       - .env
     depends_on:
       - db
+    networks:
+      - ziwalink_net
 
   db:
     image: postgres:16
-    container_name: ziwalink_db
     environment:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
-
+    networks:
+      - ziwalink_net
 volumes:
   postgres_data:
   media:
+
+
+networks:
+  ziwalink_net:
+    driver: bridge

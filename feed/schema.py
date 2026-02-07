@@ -5,14 +5,14 @@ from django.contrib.auth import get_user_model
 from graphene_file_upload.scalars import Upload
 from graphql import GraphQLError
 from .models import Post, Comment, Like
-from .types import PostType, CommentType
+from .types import PostType, CommentType, UserType
 
 User = get_user_model()
 
 class Query(graphene.ObjectType):
     posts = graphene.List(PostType)
     post = graphene.Field(PostType, id=graphene.Int(required=True))
-    me = graphene.String()
+    me = graphene.Field(UserType)
     def resolve_posts(self, info):
         user = info.context.user
         if user.is_anonymous:
@@ -41,7 +41,7 @@ class Query(graphene.ObjectType):
         user = info.context.user
         if user.is_anonymous:
             return None
-        return user.username
+        return user
 
 class CreatePost(graphene.Mutation):
     post = graphene.Field(PostType)
@@ -112,7 +112,7 @@ class RequestPasswordReset(graphene.Mutation):
         except User.DoesNotExist:
             raise GraphQLError("User not found")
 
-        # Generate a one-time token
+        # Generate a token
         token = default_token_generator.make_token(user)
 
         return RequestPasswordReset(token=token)
