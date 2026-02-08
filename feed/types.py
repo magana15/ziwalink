@@ -1,14 +1,15 @@
 import graphene
 from graphene_django import DjangoObjectType
 from .models import ZiwaUser
-
+from django.contrib.auth import get_user_model
 from .models import Post, Comment, Like, Share
 
+User = get_user_model()
 
 class UserType(DjangoObjectType):
     class Meta:
-        model = ZiwaUser
-        fields = ("id", "username", "email")
+        model = User
+        fields = ("id", "username", "email","phone_number")
 
 
 class CommentType(DjangoObjectType):

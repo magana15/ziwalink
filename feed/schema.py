@@ -1,18 +1,19 @@
 import graphene
 import graphql_jwt
+from graphql_jwt.decorators import login_required
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth import get_user_model
 from graphene_file_upload.scalars import Upload
 from graphql import GraphQLError
 from .models import Post, Comment, Like
+from users.queries import UserQuery
 from .types import PostType, CommentType, UserType
 
 User = get_user_model()
 
-class Query(graphene.ObjectType):
+class Query(UserQuery, graphene.ObjectType):
     posts = graphene.List(PostType)
     post = graphene.Field(PostType, id=graphene.Int(required=True))
-    me = graphene.Field(UserType)
     def resolve_posts(self, info):
         user = info.context.user
         if user.is_anonymous:
@@ -37,12 +38,6 @@ class Query(graphene.ObjectType):
             .get(pk=id)
         )
 
-    def resolve_me(self, info):
-        user = info.context.user
-        if user.is_anonymous:
-            return None
-        return user
-
 class CreatePost(graphene.Mutation):
     post = graphene.Field(PostType)
 
@@ -55,7 +50,6 @@ class CreatePost(graphene.Mutation):
         user = info.context.user
         if user.is_anonymous:
             raise GraphQLError("Authentication required")
-
         post = Post.objects.create(
             author=user,
             content=content,
