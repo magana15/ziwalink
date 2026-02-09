@@ -11,7 +11,6 @@ Farmers can post updates, images of livestock, and interact through likes and co
 - GraphQL API with **JWT authentication**
 - Image uploads with Pillow
 - Dockerized **PostgreSQL + Django + Gunicorn**
-- Production-ready and deployable
 
 
 ## Tech Stack
