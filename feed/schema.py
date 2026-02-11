@@ -6,12 +6,12 @@ from django.contrib.auth import get_user_model
 from graphene_file_upload.scalars import Upload
 from graphql import GraphQLError
 from .models import Post, Comment, Like
-from users.queries import UserQuery
+from users.queries import UserQuery, Mutation as UserMutation
 from .types import PostType, CommentType, UserType
 
 User = get_user_model()
 
-class Query(UserQuery, graphene.ObjectType):
+class Query(UserQuery,graphene.ObjectType):
     posts = graphene.List(PostType)
     post = graphene.Field(PostType, id=graphene.Int(required=True))
     def resolve_posts(self, info):
@@ -132,7 +132,7 @@ class ResetPassword(graphene.Mutation):
         user.save()
         return ResetPassword(success=True)
 
-class Mutation(graphene.ObjectType):
+class Mutation(UserMutation,graphene.ObjectType):
     token_auth = graphql_jwt.ObtainJSONWebToken.Field()
     verify_token = graphql_jwt.Verify.Field()
     refresh_token = graphql_jwt.Refresh.Field()

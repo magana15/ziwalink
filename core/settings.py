@@ -32,7 +32,7 @@ SECRET_KEY = 'django-insecure--xbfqx-o866^vc7q+o-qr7x+cafdtif8hu*2(j54hrjql)vh6n
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['ziwalink.onrender.com',]
+ALLOWED_HOSTS = ['ziwalink.onrender.com', '127.0.0.1', 'localhost']
 
 
 # Application definition
