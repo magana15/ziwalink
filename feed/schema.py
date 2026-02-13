@@ -45,7 +45,7 @@ class CreatePost(graphene.Mutation):
         content = graphene.String(required=True)
         image = Upload(required=False)
         visibility = graphene.String(required=False)
-
+    @login_required
     def mutate(self, info, content, visibility="public"):
         user = info.context.user
         if user.is_anonymous:
@@ -82,7 +82,7 @@ class AddComment(graphene.Mutation):
     class Arguments:
         post_id = graphene.Int(required=True)
         content = graphene.String(required=True)
-
+    @login_required
     def mutate(self, info, post_id, content):
         user = info.context.user
         if user.is_anonymous:
