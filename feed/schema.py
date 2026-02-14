@@ -28,8 +28,6 @@ class Query(UserQuery,graphene.ObjectType):
 
     def resolve_post(self, info, id):
         user = info.context.user
-        if user.is_anonymous:
-            raise GraphQLError("Authentication required")
 
         return (
             Post.objects
