@@ -15,10 +15,6 @@ class Query(UserQuery,graphene.ObjectType):
     posts = graphene.List(PostType)
     post = graphene.Field(PostType, id=graphene.Int(required=True))
     def resolve_posts(self, info):
-        user = info.context.user
-        if user.is_anonymous:
-            raise GraphQLError("Authentication required")
-
         return (
             Post.objects
             .select_related("author")
@@ -28,6 +24,9 @@ class Query(UserQuery,graphene.ObjectType):
 
     def resolve_post(self, info, id):
         user = info.context.user
+
+        if user.is_anonymous:
+            raise GraphQLError("Authentication required")
 
         return (
             Post.objects
